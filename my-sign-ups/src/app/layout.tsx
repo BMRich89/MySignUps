@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import HouseSVG from "@/components/HouseSVG";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <div className=" flex flex-row items-center w-full h-15 bg-gray-500">
+          <a href="/" className="m-10">
+            <HouseSVG/>
+          </a>
+          <div>
+            <h1 className="text-2xl">My Sign Ups</h1>
+          </div>
+        </div>
         {children}
       </body>
     </html>
