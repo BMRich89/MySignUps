@@ -1,5 +1,5 @@
-
 'use client'
+import { Button } from "@mui/material"
 import { SubmitHandler, useForm } from "react-hook-form"
 
 type Inputs =  {
@@ -7,7 +7,7 @@ type Inputs =  {
     eventDate: Date
 }
 
-
+//TODO: Implement antiforgery
 
 export default function CreateEvent(){
 
@@ -40,7 +40,7 @@ return     <div className="grid grid-rows-[20px_1fr_20px] justify-items-center m
                         <label className="w-3/6">Event Date</label>
                         <input type="date" required className="w-3/6 bg-white text-gray-800 rounded-lg px-2" placeholder="Event Date" {...register("eventDate")}/>
                     </div>
-                    <button type="submit" className="w-full h-10 bg-green-500/10 hover:bg-green-500/50 cursor-pointer">Add Event</button>
+                    <Button variant="contained" type="submit" className="w-full h-10 bg-green-500/10 hover:bg-green-500/50 cursor-pointer">Add Event</Button>
                 </form>
             </div>
           </main>

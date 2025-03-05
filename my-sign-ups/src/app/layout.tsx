@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import HouseSVG from "@/components/HouseSVG";
-
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
+     {/* https://mui.com/material-ui/integrations/nextjs/?srsltid=AfmBOoq77c2MipSfoRwaJutX6aPQwOV6kbKSGjj-GZrqnO3pnrNViPSA */}
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,15 +31,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+
         <div className=" flex flex-row items-center w-full h-15 bg-gray-500">
           <a href="/" className="m-10">
-            <HouseSVG/>
+            <HouseSVG />
           </a>
           <div>
             <h1 className="text-2xl">My Sign Ups</h1>
           </div>
         </div>
-        {children}
+   
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            {children}
+          </ThemeProvider>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );

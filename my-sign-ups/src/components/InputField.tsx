@@ -1,3 +1,4 @@
+'use client'
 // InputField.tsx
 import React from 'react';
 

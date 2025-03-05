@@ -1,11 +1,35 @@
+'use client'
 import CalendarSVG from "@/components/CalendarSVG";
 import CreateEventSVG from "@/components/CreateEventSVG";
 import GearSVG from "@/components/GearSVG";
 import LinkButton from "@/components/LinkButton";
 import Image from "next/image";
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { cyan, purple } from '@mui/material/colors';
+
 
 export default function Home() {
+  
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: cyan[500],
+      },
+      secondary: {
+        main: '#36454F',
+      },
+    },
+  });
+  
+
+
+
   return (
+    <ThemeProvider theme={theme}>
     <div className="grid grid-rows-[20px_1fr_20px] justify-items-center min-h-screen font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2  sm:items-start">
         <div className="rounded-full bg-gray-500/25 p-5">
@@ -72,5 +96,6 @@ export default function Home() {
         </a>
       </footer>
     </div>
+    </ThemeProvider>
   );
 }
