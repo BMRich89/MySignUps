@@ -2,6 +2,7 @@
 import { Button } from "@mui/material"
 import { SubmitHandler, useForm } from "react-hook-form"
 
+
 type Inputs =  {
     eventName:string,
     eventDate: Date
