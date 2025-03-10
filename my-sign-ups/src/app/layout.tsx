@@ -6,6 +6,11 @@ import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
      {/* https://mui.com/material-ui/integrations/nextjs/?srsltid=AfmBOoq77c2MipSfoRwaJutX6aPQwOV6kbKSGjj-GZrqnO3pnrNViPSA */}
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
