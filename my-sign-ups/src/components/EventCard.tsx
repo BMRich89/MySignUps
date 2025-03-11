@@ -1,4 +1,5 @@
 'use client'
+import ConvertToTitleCase from "@/app/utils/stringUtil";
 import { Card, CardContent, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
 type EventCardProps = {
@@ -8,15 +9,15 @@ type EventCardProps = {
 
 export default function EventCard({ EventName, EventDate }: EventCardProps) {
     const card = <CardContent >
-        <Typography variant="h5" component="div">
-           {EventName}
+        <Typography variant="h5" component="p" sx={{textAlign:"center"}}>
+           {ConvertToTitleCase(EventName)}
         </Typography>
-        <Typography sx={{ color: 'gray', mb: 1.5 }}>{EventDate.toString()}</Typography>
+        <Typography variant="h6" sx={{ textAlign:"center", mb: 1.5 }}>{EventDate.toString()}</Typography>
             
     
     </CardContent>
     const theme = useTheme();
-    return <Card color="secondary" sx={{bgcolor:theme.palette.secondary.main, color:"#FFF", mb:5}}>
+    return <Card  sx={{ mb:5}}>
         {card}
     </Card>
 }

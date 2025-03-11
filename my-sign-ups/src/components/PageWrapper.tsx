@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 type PageWrapperProps = { 
     title: string;
@@ -8,10 +8,10 @@ type PageWrapperProps = {
 
 export default function PageWrapper({ title,children }: PageWrapperProps) {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
+    <Container sx={{bgcolor:"background.default"}} className="grid grid-rows-[20px_1fr_20px] justify-center min-h-screen font-[family-name:var(--font-geist-sans)]">
               <main className="flex flex-col gap-8 row-start-2 items-center w-full">
                 <div>
-                    <Typography variant="h2" component="h1">
+                    <Typography variant="h2" component="h1" color="text.secondary">
                         {title}
                     </Typography>
                 </div>
@@ -19,6 +19,6 @@ export default function PageWrapper({ title,children }: PageWrapperProps) {
                     {children}
                 </div>
               </main>
-            </div>
+            </Container>
   );
 }

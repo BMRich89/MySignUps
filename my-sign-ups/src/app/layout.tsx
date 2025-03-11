@@ -1,15 +1,17 @@
+
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import HouseSVG from "@/components/HouseSVG";
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
-import { ThemeProvider } from "@mui/material";
+import { Box, Container, Grid, Grid2, Link, ThemeProvider, Typography } from "@mui/material";
 import theme from "./theme";
-     {/* https://mui.com/material-ui/integrations/nextjs/?srsltid=AfmBOoq77c2MipSfoRwaJutX6aPQwOV6kbKSGjj-GZrqnO3pnrNViPSA */}
+{/* https://mui.com/material-ui/integrations/nextjs/?srsltid=AfmBOoq77c2MipSfoRwaJutX6aPQwOV6kbKSGjj-GZrqnO3pnrNViPSA */ }
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
+import HouseSVG from "@/components/HouseSVG";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,25 +35,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <AppRouterCacheProvider>
+        <ThemeProvider theme={theme}>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
+            <Box sx={{ width:'100%',bgcolor: 'background.default' }}>
 
-        <div className=" flex flex-row items-center w-full h-15 bg-gray-500">
-          <a href="/" className="m-10">
-            <HouseSVG />
-          </a>
-          <div>
-            <h1 className="text-2xl">My Sign Ups</h1>
-          </div>
-        </div>
-   
-        <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>
-            {children}
-          </ThemeProvider>
-        </AppRouterCacheProvider>
-      </body>
+              <Grid2 container sx={{ bgcolor: 'secondary.main',paddingY:'.5rem' }} >
+                <Grid2 size={.2}></Grid2>
+                <Grid2 size={.6}>
+                  <Link href="/">
+                  <HouseSVG color="action" sx={{ fontSize: 40 }} />
+                  </Link>
+                </Grid2>
+                <Grid2 size={4}>
+                  <Typography color="secondary.dark" variant="h4">My Sign Ups</Typography>
+                </Grid2>
+              </Grid2>
+              {children}
+            </Box>
+          </body>
+        </ThemeProvider>
+      </AppRouterCacheProvider>
     </html>
   );
 }

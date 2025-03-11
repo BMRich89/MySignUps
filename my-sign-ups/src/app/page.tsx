@@ -5,30 +5,14 @@ import GearSVG from "@/components/GearSVG";
 import LinkButton from "@/components/LinkButton";
 import Image from "next/image";
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { cyan, purple } from '@mui/material/colors';
 import PageWrapper from "@/components/PageWrapper";
-import { Typography } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 
 export default function Home() {
   
-  const theme = createTheme({
-    palette: {
-      primary: {
-        main: cyan[500],
-      },
-      secondary: {
-        main: '#36454F',
-      },
-    },
-  });
-  
-
-
-
   return (
-    <>
+    <Container>
     <PageWrapper title="My Sign Ups">
           <LinkButton link="/create-event">
             <CreateEventSVG/>
@@ -90,6 +74,6 @@ export default function Home() {
           Go to nextjs.org →
         </a>
       </footer>
-    </>
+    </Container>
   );
 }

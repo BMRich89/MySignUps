@@ -6,43 +6,50 @@ import { Backdrop, Button, Card, CircularProgress, Container, Skeleton } from "@
 import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 
-type EventInfo =  {
-    eventName:string,
-    eventDate: Date
+type EventInfo = {
+  eventName: string,
+  eventDate: Date,
+  _id: any
 }
 
 
-export default function UpcomingEvents(){
+export default function UpcomingEvents() {
 
 
-    const [events,setEvents] = useState<EventInfo[]>([]);
-  
-    const [loading, setLoading] = useState(true);
+  const [events, setEvents] = useState<EventInfo[]>([]);
 
-    useEffect(() => {
-      setLoading(true);
-      fetch("/api/events", {
-        method: "GET",
-      })
-        .then((res) => res.json())
-        .then((ev) => {
-          setEvents(ev);
-          setLoading(false);
-        });
-    }, []);
+  const [loading, setLoading] = useState(true);
 
-    if (loading) {
-      return <PageWrapper title="Upcoming Events">
-        <Backdrop open={loading}>
-          <CircularProgress />
-        </Backdrop>
-      </PageWrapper>
-    }
-return <PageWrapper title="Upcoming Events"> 
-              {events.map((ev) => (
-                <EventCard key={`${ev.eventName}_${ev.eventDate}`} EventName={ev.eventName} EventDate={ev.eventDate} />
-              ))}
-        </PageWrapper>
+  useEffect(() => {
+    setLoading(true);
+    fetch("/api/events", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((ev) => {
+        setEvents(ev);
+        setLoading(false);
+      });
+  }, []);
 
-    
+  if (loading) {
+    return <PageWrapper title="Upcoming Events">
+      <Backdrop open={loading}>
+        <CircularProgress />
+      </Backdrop>
+    </PageWrapper>
+  }
+  return <PageWrapper title="Upcoming Events">
+    <Container>
+      {events.map((ev) => (
+        <EventCard
+          key={`${ev._id}`}
+          EventName={ev.eventName}
+          EventDate={ev.eventDate}
+        />
+      ))}
+    </Container>
+  </PageWrapper>
+
+
 }
