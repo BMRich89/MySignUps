@@ -1,4 +1,5 @@
 import clientPromise from "@/lib/mongo";
+import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 
@@ -32,5 +33,18 @@ export async function GET() {
     console.log(records)
 
     return NextResponse.json(records, { status: 201 });
+
+}
+
+export async function DELETE(req: Request) {
+  const client = await clientPromise;
+  const db = client.db("mydatabase");
+  const body = await req.json();
+  const id:ObjectId = body.id;
+  const objectId = new ObjectId(id);
+
+  await db.collection("events").deleteOne({_id: objectId});
+
+  return NextResponse.json( { status: 201 });
 
 }
