@@ -20,13 +20,13 @@ export async function POST(req: Request) {
   
   
   
-//   export async function GET() {
-//       const client = await clientPromise;
-//       const db = client.db("mydatabase");
+  export async function GET() {
+      const client = await clientPromise;
+      const db = client.db("mydatabase");
   
-//       const records = await db.collection("events").find().toArray();
-//       console.log(records)
+      const records = await db.collection("eventTypes").find().toArray();
+      console.log(records)
   
-//       return NextResponse.json(records, { status: 201 });
+      return NextResponse.json(records, { status: 201 });
   
-//   }
+  }

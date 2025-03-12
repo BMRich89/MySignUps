@@ -1,6 +1,6 @@
 'use client'
 import PageWrapper from "@/components/PageWrapper"
-import { Alert, Box, Button, Container, InputLabel, Stack, TextField } from "@mui/material"
+import { Alert, Box, Button, Container, InputLabel, Paper, Stack, TextField } from "@mui/material"
 import router from "next/router"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -50,9 +50,9 @@ export default function CreateEvent(){
     
 return     <PageWrapper title="Create Event">
                 <Container>
-                <Box sx={{bgcolor: 'primary.main', 'padding': '1rem'}}>
+                <Paper sx={{ 'padding': '1rem'}}>
                     <EventForm onSubmit={onSubmit}/>
-                </Box>
+                </Paper>
                 <Box sx={{"width":"100%"}}>
                     {alert && <Alert icon={<CheckIcon fontSize="inherit" />} variant="filled" sx={{"marginTop":"1rem"}} severity={alert && alert.success ? "success" : "error"}>{alert.message}</Alert>}
                 </Box>
