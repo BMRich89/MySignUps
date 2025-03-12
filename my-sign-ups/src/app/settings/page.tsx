@@ -6,7 +6,9 @@ import { Button, Dialog } from "@mui/material"
 
 export default function Settings(){
 
-
+const onSubmit = () => {
+    
+}
     return <PageWrapper title="Settings">
         <CreateEventTypeDialog open={false} selectedValue={""} onClose={function (value: string): void {
             throw new Error("Function not implemented.")

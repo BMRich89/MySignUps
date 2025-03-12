@@ -9,7 +9,7 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import MyDialog from './MyDialog';
 import EventTypeForm from './forms/EventTypeForm';
-import { EventTypeInputs } from '@/types/eventTypes';
+import { BasicEventType } from '@/types/eventTypes';
 
 export interface SimpleDialogProps {
     open: boolean;
@@ -25,10 +25,10 @@ export default function CreateEventTypeDialog(props: SimpleDialogProps) {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm<EventTypeInputs>()
+    } = useForm<BasicEventType>()
 
-    const onSubmit: SubmitHandler<EventTypeInputs> = (data: EventTypeInputs) => {
-        fetch("/api/events", {
+    const onSubmit: SubmitHandler<BasicEventType> = (data: BasicEventType) => {
+        fetch("/api/event-type", {
             method: "POST",
             headers: { "Content-Type": "application/json" }, body: JSON.stringify(data),
         });

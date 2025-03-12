@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { EventTypeInputs, EventTypeFeatures } from "@/types/eventTypes";
+import { BasicEventType, EventTypeFeatures } from "@/types/eventTypes";
 
 
 type EventTypeFormProps = 
@@ -26,7 +26,7 @@ export default function EventTypeForm({onSubmit}:EventTypeFormProps) {
             handleSubmit,
             watch,
             formState: { errors },
-        } = useForm<EventTypeInputs>()
+        } = useForm<BasicEventType>()
 
         const OPTIONS = {
             BASIC: "Basic",
@@ -71,7 +71,7 @@ const [selectedFeature, setSelectedFeature] = useState<OptionKeys>("BASIC");
         <div className="flex m-6">
             <TextField className="w-6/6" type="number" placeholder="Capacity (leave blank for unlimited)" {...register("capacity")} />
         </div>
-        {selectedFeature == "ROLES" && <>
+        {/* {selectedFeature == "ROLES" && <>
         <h3>Roles</h3>
         <Divider />
         {Array.from({ length: numberOfRoles }).map((_, index) => (
@@ -87,6 +87,7 @@ const [selectedFeature, setSelectedFeature] = useState<OptionKeys>("BASIC");
             {!roleLimitReached() && roleSection}
         </div>
         </>
-        }
+        } */}
+        <Button variant="contained" type="submit" className="w-full h-10 bg-green-500/10 hover:bg-green-500/50 cursor-pointer">Add Event Type</Button>
     </form>
 }

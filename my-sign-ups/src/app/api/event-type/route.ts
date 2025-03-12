@@ -1,18 +1,22 @@
+import clientPromise from "@/lib/mongo";
+import { BasicEventType } from "@/types/eventTypes";
+import { NextResponse } from "next/server";
+import { EventType } from "react-hook-form";
 
 
-// export async function POST(req: Request) {
-//     const bod = await req.json()
-//     console.log(bod)
-//     const { eventName, eventDate }: EventType = bod;
-//     const client = await clientPromise;
-//     const db = client.db("mydatabase");
+export async function POST(req: Request) {
+    const bod = await req.json()
+    console.log(bod)
+    const { eventTypeName, description, location, capacity }: BasicEventType = bod;
+    const client = await clientPromise;
+    const db = client.db("mydatabase");
   
   
-//     const newEvent = { eventName: eventName, eventDate: eventDate };
-//     await db.collection("events").insertOne(newEvent);
+    const newEventType = { eventTypeName: eventTypeName, description: description, location: location, capacity: capacity };
+    await db.collection("eventTypes").insertOne(newEventType);
   
-//     return NextResponse.json(newEvent, { status: 201 });
-//   }
+    return NextResponse.json(newEventType, { status: 201 });
+  }
   
   
   
