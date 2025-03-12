@@ -5,6 +5,7 @@ import router from "next/router"
 import { useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import CheckIcon from '@mui/icons-material/Check';
+import { EventForm } from "@/components/forms/EventForm"
 
 
 type Inputs =  {
@@ -50,17 +51,7 @@ export default function CreateEvent(){
 return     <PageWrapper title="Create Event">
                 <Container>
                 <Box sx={{bgcolor: 'primary.main', 'padding': '1rem'}}>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="flex m-3">
-                        <InputLabel className="w-3/6">Event Name</InputLabel>
-                        <TextField  className="w-3/6 bg-white text-gray-800 rounded-lg px-2" required placeholder="Event Name" {...register("eventName")}/>
-                    </div>
-                    <div className="flex m-3">
-                        <InputLabel className="w-3/6">Event Date</InputLabel>
-                        <TextField  type="date" required className="w-3/6 bg-white text-gray-800 rounded-lg px-2" placeholder="Event Date" {...register("eventDate")}/>
-                    </div>
-                    <Button variant="contained" type="submit" className="w-full h-10 bg-green-500/10 hover:bg-green-500/50 cursor-pointer">Add Event</Button>
-                </form>
+                    <EventForm onSubmit={onSubmit}/>
                 </Box>
                 <Box sx={{"width":"100%"}}>
                     {alert && <Alert icon={<CheckIcon fontSize="inherit" />} variant="filled" sx={{"marginTop":"1rem"}} severity={alert && alert.success ? "success" : "error"}>{alert.message}</Alert>}

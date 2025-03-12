@@ -1,23 +1,43 @@
 'use client'
 import ConvertToTitleCase from "@/app/utils/stringUtil";
-import { Card, CardContent, Typography } from "@mui/material"
+import { Box, Button, Card, CardContent, Typography } from "@mui/material"
 import { useTheme } from '@mui/material/styles';
+import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone';
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import PreviewIcon from '@mui/icons-material/Preview';
 type EventCardProps = {
     EventName: string,
-    EventDate: Date
+    EventDate: Date,
+    deleteCallback: () => void,
+    editCallback: () => void,
+    viewCallback: () => void
 }
 
-export default function EventCard({ EventName, EventDate }: EventCardProps) {
-    const card = <CardContent >
-        <Typography variant="h5" component="p" sx={{textAlign:"center"}}>
-           {ConvertToTitleCase(EventName)}
-        </Typography>
-        <Typography variant="h6" sx={{ textAlign:"center", mb: 1.5 }}>{EventDate.toString()}</Typography>
-            
+export default function EventCard({ EventName, EventDate, viewCallback, editCallback, deleteCallback }: EventCardProps) {
+
+
+
+
     
-    </CardContent>
-    const theme = useTheme();
-    return <Card  sx={{ mb:5}}>
-        {card}
+    return <Card sx={{ mb: 5, pt: 2 }}>
+        <CardContent >
+            <Typography variant="h5" component="p" sx={{ textAlign: "center" }}>
+                {ConvertToTitleCase(EventName)}
+            </Typography>
+            <Typography variant="h6" sx={{ textAlign: "center", mb: 1.5 }}>{EventDate.toString()}</Typography>
+
+            <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "end" }}>
+                <Button onClick={() => viewCallback()} aria-label="view">
+                    <PreviewIcon color="warning" sx={{ fontSize: "40px" }} />
+                </Button>
+                <Button onClick={() => editCallback()} aria-label="edit">
+                    <EditCalendarIcon color="warning" sx={{ fontSize: "40px" }} />
+                </Button>
+
+                <Button onClick={() => deleteCallback()} aria-label="delete">
+                    <DeleteForeverTwoToneIcon color="warning" sx={{ fontSize: "40px" }} />
+                </Button>
+            </Box>
+        </CardContent>
     </Card>
 }

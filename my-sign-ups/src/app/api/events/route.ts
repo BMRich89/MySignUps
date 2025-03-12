@@ -23,8 +23,6 @@ export async function POST(req: Request) {
   return NextResponse.json(newEvent, { status: 201 });
 }
 
-
-
 export async function GET() {
     const client = await clientPromise;
     const db = client.db("mydatabase");
@@ -47,4 +45,16 @@ export async function DELETE(req: Request) {
 
   return NextResponse.json( { status: 201 });
 
+}
+
+export async function PUT(req:Request){
+  const client = await clientPromise;
+  const db = client.db("mydatabase");
+  const body = await req.json();
+  const id:ObjectId = body.id;
+  const objectId = new ObjectId(id);
+  const { eventName, eventDate }: Event = body;
+
+  await db.collection("events").updateOne({_id: objectId}, {$set: {eventName: eventName, eventDate: eventDate}});
+  return NextResponse.json( { status: 201 });
 }

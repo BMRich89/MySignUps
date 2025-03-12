@@ -10,8 +10,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import HouseSVG from "@/components/HouseSVG";
-
+import HomeIcon from '@mui/icons-material/Home';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,7 +45,7 @@ export default function RootLayout({
                 <Grid2 size={.2}></Grid2>
                 <Grid2 size={.6}>
                   <Link href="/">
-                  <HouseSVG color="action" sx={{ fontSize: 40 }} />
+                  <HomeIcon color="action" sx={{ fontSize: 40 }} />
                   </Link>
                 </Grid2>
                 <Grid2 size={4}>

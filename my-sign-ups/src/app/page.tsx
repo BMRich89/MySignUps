@@ -1,10 +1,9 @@
 'use client'
-import CalendarSVG from "@/components/CalendarSVG";
-import CreateEventSVG from "@/components/CreateEventSVG";
-import GearSVG from "@/components/GearSVG";
+import SettingsIcon from '@mui/icons-material/Settings';
 import LinkButton from "@/components/LinkButton";
 import Image from "next/image";
-
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AddCardIcon from '@mui/icons-material/AddCard';
 import PageWrapper from "@/components/PageWrapper";
 import { Container, Typography } from "@mui/material";
 
@@ -15,15 +14,15 @@ export default function Home() {
     <Container>
     <PageWrapper title="My Sign Ups">
           <LinkButton link="/create-event">
-            <CreateEventSVG/>
+            <AddCardIcon/>
             <Typography variant="h6">Create Event</Typography>
           </LinkButton>
           <LinkButton link="/upcoming-events">
-            <CalendarSVG/>
+            <CalendarMonthIcon/>
             <Typography variant="h6">Upcoming Events</Typography>
           </LinkButton>
           <LinkButton link="/settings">
-            <GearSVG/>
+            <SettingsIcon/>
             <Typography variant="h6">Settings</Typography>
           </LinkButton>
         </PageWrapper>  
