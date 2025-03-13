@@ -5,15 +5,15 @@ import { useTheme } from '@mui/material/styles';
 import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone';
 import EditCalendarIcon from '@mui/icons-material/EditCalendar';
 import PreviewIcon from '@mui/icons-material/Preview';
+import { EventData } from "@/types/eventData";
 type EventCardProps = {
-    EventName: string,
-    EventDate: Date,
+    EventData: EventData,
     deleteCallback: () => void,
     editCallback: () => void,
     viewCallback: () => void
 }
 
-export default function EventCard({ EventName, EventDate, viewCallback, editCallback, deleteCallback }: EventCardProps) {
+export default function EventCard({ EventData, viewCallback, editCallback, deleteCallback }: EventCardProps) {
 
 
 
@@ -22,9 +22,9 @@ export default function EventCard({ EventName, EventDate, viewCallback, editCall
     return <Card sx={{ mb: 5, pt: 2 }}>
         <CardContent >
             <Typography variant="h5" component="p" sx={{ textAlign: "center" }}>
-                {ConvertToTitleCase(EventName)}
+                { ConvertToTitleCase(EventData.name)}
             </Typography>
-            <Typography variant="h6" sx={{ textAlign: "center", mb: 1.5 }}>{EventDate.toString()}</Typography>
+            { <Typography variant="h6" sx={{ textAlign: "center", mb: 1.5 }}>{EventData && EventData.date.toString()}</Typography> }
 
             <Box sx={{ display: "flex", flexDirection: "row", justifyContent: "flex-end", alignItems: "end" }}>
                 <Button onClick={() => viewCallback()} aria-label="view">
