@@ -1,12 +1,5 @@
 'use client'
-import PageWrapper from "@/components/PageWrapper"
-import { Alert, Box, Button, Container, InputLabel, Paper, Stack, TextField, Typography } from "@mui/material"
-import router from "next/router"
-import { useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import CheckIcon from '@mui/icons-material/Check';
 import { EventForm } from "@/components/forms/EventForm"
-import MyDialog from "@/components/MyDialog"
 import { EventData } from "@/types/eventData"
 
 

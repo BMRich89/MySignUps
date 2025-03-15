@@ -16,6 +16,7 @@ import {
     Tab,
     Grid2,
     ButtonGroup,
+    Typography,
 } from "@mui/material";
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -75,7 +76,7 @@ export function EventForm({ onSubmit, readonly, existingEvent }: EventFormProps)
 
     const roleForm = (
         <>
-            {fields.map((field, index) => (
+            {fields.filter((f)=> readonly && f.limit != 0 ).map((field, index) => (
                 <Grid2 container spacing={1} key={field.id}>
                     <Grid2  size={8}>
                         <Grid2 container spacing={1}>
@@ -114,20 +115,24 @@ export function EventForm({ onSubmit, readonly, existingEvent }: EventFormProps)
     );
 
     return (
-        <Paper sx={{ padding: '3rem', margin: 'auto' }}>
+        <Paper sx={{ padding: '1rem', margin: 'auto' }}>
             <fieldset disabled={readonly}>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack spacing={2}>
+                        {/* Event Name */}
+                        {
+                            !readonly && <FormControl fullWidth>
+                            <TextField label="Event Name" required {...register("name")} />
+                        </FormControl>
+                        }
+                        
+
                         {/* Event Date */}
                         <FormControl fullWidth>
                             <InputLabel shrink>Event Date</InputLabel>
                             <TextField type="date" required {...register("date")} />
                         </FormControl>
 
-                        {/* Event Name */}
-                        <FormControl fullWidth>
-                            <TextField label="Event Name" required {...register("name")} />
-                        </FormControl>
 
                         {/* Description */}
                         <FormControl fullWidth>

@@ -1,18 +1,26 @@
 
 'use client'
 
-import { Paper } from "@mui/material"
+import { Box, Button, Paper, Stack, Typography } from "@mui/material"
 
 type LinkButtonProps = {
-    link: string,
-    children: React.ReactNode
+    title: string,
+    icon: React.ReactNode
+    link?: string,
+    component?:"a" | "button",
+    clickHandler?: () => void
 }
 
 
-export default function LinkButton({ link, children }: LinkButtonProps) {
-    return <Paper variant="outlined" className="w-full">
-    <a href={link} className="flex flex-col w-50 h-50 bg-green-700/50 items-center justify-center">
-            {children}
-    </a>
-    </Paper> 
+export default function LinkButton({ title,icon,link,clickHandler, component }: LinkButtonProps) {
+    return <Button fullWidth variant="contained" component={!component ? "button" : component} sx={{height:"100%",color:'primary.dark.500', textAlign:'center'}} onClick={clickHandler} href={link}>
+        <Stack>
+                <Box>
+                  {icon}
+                </Box>
+                <Box>
+                  <Typography variant="h6" sx={{m:2}}>{title}</Typography>
+                </Box>
+              </Stack>
+    </Button> 
 }

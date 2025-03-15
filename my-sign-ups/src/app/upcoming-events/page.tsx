@@ -2,20 +2,19 @@
 'use client'
 import EventCard from "@/components/EventCard"
 import PageWrapper from "@/components/PageWrapper"
-import { Backdrop, Button, Card, CircularProgress, Container, Dialog, DialogActions, Skeleton } from "@mui/material"
+import { Backdrop, Button, Card, CircularProgress, Container, Dialog, DialogActions, Grid2, Skeleton, Typography } from "@mui/material"
 import { ObjectId } from "mongodb"
 import { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import ViewEvent from "../view-event/page"
-import MyDialog from "@/components/MyDialog"
 import { EventData } from "@/types/eventData"
-
+import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault'
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState(true);
-  const[eventView,setEventView] = useState<EventData | null>(null);
-  const[openView,setOpenView] = useState(false);
+  const [eventView, setEventView] = useState<EventData | null>(null);
+  const [openView, setOpenView] = useState(false);
   useEffect(() => {
     setLoading(true);
     fetch("/api/events", {
@@ -50,28 +49,36 @@ export default function UpcomingEvents() {
   }
   function viewEvent(_id: any): void {
     fetch(`/api/events?id=${_id}`, {
-      method: "GET", 
+      method: "GET",
     }).then((response) => response.json())
       .then((data) => {
-       setEventView(data);
-       setOpenView(true);
+        setEventView(data);
+        setOpenView(true);
       });
   }
 
   function editEvent(_id: ObjectId): void {
     throw new Error("Function not implemented.")
   }
-  
-   const viewEventDialog = () => eventView && <Dialog title="View Event" open={openView}>
-      <DialogActions>
-                        <Button
-                            sx={{ bgcolor: "secondary.main", color: "primary.contrastText" }}
-                            onClick={() => setOpenView(false)}>
-                            Close
-                        </Button>
-                    </DialogActions>
-   <ViewEvent eventObject={eventView}/>
-   </Dialog>
+
+  const viewEventDialog = () => eventView && <Dialog title="View Event" open={openView}>
+    <Grid2 container>
+      <Grid2 size={10}>
+        <Typography variant="h4" margin={2}>{eventView.name}</Typography>
+      </Grid2>
+      <Grid2>
+        <DialogActions>
+          <Button
+            sx={{ color: "secondary.main", ":hover": { color: "secondary.dark" } }}
+            onClick={() => setOpenView(false)}>
+            <DisabledByDefaultIcon fontSize="large" />
+          </Button>
+        </DialogActions>
+      </Grid2>
+    </Grid2>
+
+    <ViewEvent eventObject={eventView} />
+  </Dialog>
 
   return <PageWrapper title="Upcoming Events">
     <Container>
