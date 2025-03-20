@@ -2,19 +2,36 @@
 'use client'
 import EventCard from "@/components/EventCard"
 import PageWrapper from "@/components/PageWrapper"
-import { Backdrop, Button, Card, CircularProgress, Container, Dialog, DialogActions, Grid2, Skeleton, Typography } from "@mui/material"
+import { Alert, Backdrop, Button, CircularProgress, Container, Grid2, Snackbar } from "@mui/material"
 import { ObjectId } from "mongodb"
 import { useEffect, useState } from "react"
-import { SubmitHandler, useForm } from "react-hook-form"
-import ViewEvent from "../view-event/page"
 import { EventData } from "@/types/eventData"
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault'
+import MyDialog from "@/components/MyDialog"
+import { EventForm } from "@/components/forms/EventForm"
+import { ObjectEncodingOptions } from "fs"
+import React from "react"
+import { State } from "../page"
 
 export default function UpcomingEvents() {
+  const [toggleUpdate, setToggleUpdate] = useState(false);
   const [events, setEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState(true);
   const [eventView, setEventView] = useState<EventData | null>(null);
   const [openView, setOpenView] = useState(false);
+  const [state, setState] = React.useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+    message: '',
+    severity: 'info'
+  });
+
+  const { vertical, horizontal, open, message, severity } = state;
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
+
   useEffect(() => {
     setLoading(true);
     fetch("/api/events", {
@@ -28,14 +45,16 @@ export default function UpcomingEvents() {
   }, []);
 
 
-  const deleteEvent = (id: any) => {
+  const deleteEventFetch = (id: any) => {
     fetch("/api/events", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: id }),
     }).then((response) => {
       if (response.ok) {
-        setEvents(events.filter((ev) => ev._id !== id));
+        setEvents(events.filter((ev) => ev._id !== id)); //TODO probably should refetch rather than filtering out
+        setOpenView(false);
+        setState({ ...state, open: true, message: 'Event deleted successfully', severity: 'success' });
       }
     });
   }
@@ -47,7 +66,7 @@ export default function UpcomingEvents() {
       </Backdrop>
     </PageWrapper>
   }
-  function viewEvent(_id: any): void {
+  function viewEventFetch(_id: ObjectId): void {
     fetch(`/api/events?id=${_id}`, {
       method: "GET",
     }).then((response) => response.json())
@@ -57,43 +76,71 @@ export default function UpcomingEvents() {
       });
   }
 
-  function editEvent(_id: ObjectId): void {
-    throw new Error("Function not implemented.")
+  function editEventFetch(_id: ObjectId): void {
+    setToggleUpdate(false);
   }
 
-  const viewEventDialog = () => eventView && <Dialog title="View Event" open={openView}>
-    <Grid2 container>
-      <Grid2 size={10}>
-        <Typography variant="h4" margin={2}>{eventView.name}</Typography>
+  
+
+
+  const viewEventDialog = () => {
+
+    const buttons = eventView && <Grid2 container columnSpacing={0} direction={'row-reverse'} sx={{ p: 2 }}>
+      { !toggleUpdate ? <Grid2 size={6}>
+        <Button variant="contained" color="info" sx={{ width: "100%" }} onClick={() => setToggleUpdate(true)} disabled={false}>
+          Edit Event
+        </Button>
+      </Grid2> : <Grid2 size={12}>
+        <Button variant="contained" color="info" sx={{ width: "100%" }} onClick={() => editEventFetch(eventView._id)} disabled={false}>
+          Update Event
+        </Button>
       </Grid2>
-      <Grid2>
-        <DialogActions>
-          <Button
-            sx={{ color: "secondary.main", ":hover": { color: "secondary.dark" } }}
-            onClick={() => setOpenView(false)}>
-            <DisabledByDefaultIcon fontSize="large" />
-          </Button>
-        </DialogActions>
-      </Grid2>
+      }
+      { !toggleUpdate && <Grid2 size={6}>
+        <Button variant="contained" color="error" sx={{ width: "90%" }} onClick={() => deleteEventFetch(eventView._id)} disabled={false}>
+          Delete Event
+        </Button>
+      </Grid2>}
     </Grid2>
 
-    <ViewEvent eventObject={eventView} />
-  </Dialog>
+      const onClose = () => {
+        setToggleUpdate(false);
+      }
 
-  return <PageWrapper title="Upcoming Events">
-    <Container>
-      {events.map((ev) => (
-        <EventCard
-          key={`${ev._id}`}
-          EventData={ev}
-          viewCallback={() => viewEvent(ev._id)}
-          editCallback={() => editEvent(ev._id)}
-          deleteCallback={() => deleteEvent(ev._id)}
-        />
-      ))}
-      {viewEventDialog()}
-    </Container>
-  </PageWrapper>
+    return eventView && <MyDialog title={eventView.name} open={openView} setOpen={(val) => setOpenView(val)} onClose={() => onClose()}>
+      <EventForm onSubmit={() => { }} readonly={true} existingEvent={eventView} actionButtons={buttons}/>
+    </MyDialog>
+  }
+
+  return <>
+    <PageWrapper title="Upcoming Events">
+      <Container sx={{ width: '100%', textAlign: 'center' }}>
+        {events.map((ev) => (
+          <EventCard
+            key={`${ev._id}`}
+            EventData={ev}
+            viewCallback={() => viewEventFetch(ev._id)}
+            deleteCallback={() => deleteEventFetch(ev._id)}
+          />
+        ))}
+        {viewEventDialog()}
+      </Container>
+    </PageWrapper>
+
+    <Snackbar
+      anchorOrigin={{ vertical, horizontal }}
+      open={open}
+      autoHideDuration={5000}
+      onClose={handleClose}
+      sx={{ color: 'primary.main' }}>
+      <Alert
+        onClose={handleClose}
+        severity={state.severity}
+        variant="filled"
+        sx={{ width: '100%' }}
+      >{state.message}</Alert>
+    </Snackbar>
+  </>
 
 
 }

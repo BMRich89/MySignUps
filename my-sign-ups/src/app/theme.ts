@@ -24,6 +24,12 @@ const theme = createTheme({
       primary: "#361134",
       secondary: "#AB3428"
   }
+},components: {
+  MuiTextField: {
+    defaultProps: {
+      variant: "filled", // Sets 'filled' as the default variant globally
+    }
+  }
 }
 });
   //secondary bg color #5B7B7A

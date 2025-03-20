@@ -12,7 +12,7 @@ import { SubmitHandler } from 'react-hook-form';
 import { EventData } from '@/types/eventData';
 import React from 'react';
 
-interface State extends SnackbarOrigin {
+export interface State extends SnackbarOrigin {
   open: boolean;
   message: string;
   severity: 'success' | 'error' | 'info' | 'warning';
@@ -58,6 +58,9 @@ export default function Home() {
 
   }
 
+  const buttons = <Button variant="contained" type="submit" color="success" sx={{ width: "100%" }}>
+  Add Event
+</Button>
 
   return (
     <Container>
@@ -75,11 +78,8 @@ export default function Home() {
           </Grid2>
         </Grid2>
         
-
-        
-
-        <MyDialog open={openCreateEvent} setOpen={setCreateEvent} title="Create Event">
-          <EventForm onSubmit={onSubmit} readonly={false} existingEvent={null} />
+        <MyDialog open={openCreateEvent} setOpen={setCreateEvent} title="Create Event" onClose={()=>{}}>
+          <EventForm onSubmit={onSubmit} readonly={false} existingEvent={null} submitButton={buttons}/>
         </MyDialog>
         <Snackbar
           anchorOrigin={{ vertical, horizontal }}

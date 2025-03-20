@@ -2,39 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import {
     TextField,
-    Button,
     InputLabel,
     FormControl,
-    Divider,
     Checkbox,
     FormControlLabel,
     FormGroup,
     Stack,
-    Paper,
     Box,
     Tabs,
     Tab,
-    Grid2,
-    ButtonGroup,
-    Typography,
+    Container,
 } from "@mui/material";
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { EventData } from "@/types/eventData";
+import RoleForm from "./RoleForm";
 
 type EventFormProps = {
     onSubmit: (data: any) => void;
     readonly: boolean;
     existingEvent: EventData | null;
+    actionButtons?: React.ReactNode;
+    submitButton?: React.ReactNode;
 };
 
-export function EventForm({ onSubmit, readonly, existingEvent }: EventFormProps) {
+export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, submitButton }: EventFormProps) {
     const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<EventData>({
         defaultValues: {
             roles: [{ role: "", limit: 0 }],
         },
     });
-
+    console.log(actionButtons)
     const [capTabs, setCapTabs] = useState(0);
     const [limitedAttendees, setLimitedAttendees] = useState<boolean>(existingEvent?.limitedAttendees ?? false);
 
@@ -57,7 +53,7 @@ export function EventForm({ onSubmit, readonly, existingEvent }: EventFormProps)
             setValue("capacity", existingEvent.capacity);
             setValue("limitedAttendees", existingEvent.limitedAttendees);
             setValue("rolesLimited", existingEvent.rolesLimited);
-            
+
             existingEvent.roles.forEach((role, index) => {
                 if (index > 0) append({ role: "", limit: 0 });
                 setValue(`roles.${index}.role`, role.role);
@@ -66,70 +62,23 @@ export function EventForm({ onSubmit, readonly, existingEvent }: EventFormProps)
         }
     }, [existingEvent, setValue, append]);
 
-    const roleLimitReached = () => fields.length >= 4;
+    const roleLimitReached = () => fields.length >= 4; //TODO config this? Settings?
     
-    const incrementRoles = () => {
-        if (!roleLimitReached()) {
-            append({ role: "", limit: 0 });
-        }
-    };
-
-    const roleForm = (
-        <>
-            {fields.filter((f)=> readonly && f.limit != 0 ).map((field, index) => (
-                <Grid2 container spacing={1} key={field.id}>
-                    <Grid2  size={8}>
-                        <Grid2 container spacing={1}>
-                            <Grid2  size={8}>
-                                <TextField
-                                    required
-                                    placeholder="Role"
-                                    {...register(`roles.${index}.role`)}
-                                />
-                            </Grid2>
-                            <Grid2  size={4}>
-                                <TextField
-                                    required
-                                    placeholder="Limit"
-                                    type="number"
-                                    {...register(`roles.${index}.limit`)}
-                                />
-                            </Grid2>
-                        </Grid2>
-                    </Grid2>
-                    <ButtonGroup size="small">
-                        {fields.length > 1 && (
-                            <Button variant="contained" color="error" onClick={() => remove(index)}>
-                                <RemoveCircleIcon />
-                            </Button>
-                        )}
-                        {!roleLimitReached() && (
-                            <Button variant="contained" color="success" onClick={incrementRoles}>
-                                <AddCircleIcon />
-                            </Button>
-                        )}
-                    </ButtonGroup>
-                </Grid2>
-            ))}
-        </>
-    );
-
     return (
-        <Paper sx={{ padding: '1rem', margin: 'auto' }}>
-            <fieldset disabled={readonly}>
+        <Container sx={{ width: '100%', p:2 }}>
+            <fieldset disabled={readonly} >
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Stack spacing={2}>
                         {/* Event Name */}
                         {
                             !readonly && <FormControl fullWidth>
-                            <TextField label="Event Name" required {...register("name")} />
-                        </FormControl>
+                                <TextField label="Event Name" required {...register("name")} />
+                            </FormControl>
                         }
-                        
 
                         {/* Event Date */}
                         <FormControl fullWidth>
-                            <InputLabel shrink>Event Date</InputLabel>
+                            <InputLabel variant="outlined" shrink>Event Date</InputLabel>
                             <TextField type="date" required {...register("date")} />
                         </FormControl>
 
@@ -191,7 +140,16 @@ export function EventForm({ onSubmit, readonly, existingEvent }: EventFormProps)
                         )}
 
                         {/* Role-based Capacity */}
-                        {limitedAttendees && watch("rolesLimited") && roleForm}
+                        {limitedAttendees && watch("rolesLimited") && (
+                            <RoleForm
+                                readonly={readonly}
+                                fields={fields}
+                                roleLimitReached={roleLimitReached}
+                                register={register}
+                                append={append}
+                                remove={remove}
+                            />
+                        )}
 
                         {/* General Capacity Field */}
                         {limitedAttendees && !watch("rolesLimited") && (
@@ -209,16 +167,38 @@ export function EventForm({ onSubmit, readonly, existingEvent }: EventFormProps)
                             </FormControl>
                         )}
 
-                        {/* Submit Button */}
-                        {!readonly && (
-                            <Button variant="contained" type="submit" color="secondary">
+                     
+                        {/* {!readonly && (
+                            <Grid2 container sx={{ p: 2 }} direction={'row-reverse'}>
+                                <Grid2 size={12}>
+                            <Button variant="contained" type="submit" color="success" sx={{width:"100%"}}>
                                 Add Event
                             </Button>
+                                </Grid2>
+                            </Grid2>
                         )}
+                        {readonly && (
+                            <Grid2 container columnSpacing={0} direction={'row-reverse'} sx={{ p: 2 }}>
+                                <Grid2 size={6}>
+
+                                    <Button variant="contained" color="info" sx={{width:"100%"}}>
+                                        Edit Event
+                                    </Button>
+                                </Grid2>
+                                <Grid2 size={6}>
+
+                                    <Button variant="contained" color="error"  sx={{width:"90%"}}>
+                                        Delete Event
+                                    </Button>
+                                </Grid2>
+                            </Grid2>
+                        )} */}
                     </Stack>
+                    {submitButton}
                 </form>
             </fieldset>
-        </Paper>
+               {actionButtons}
+        </Container>
     );
 }
 
