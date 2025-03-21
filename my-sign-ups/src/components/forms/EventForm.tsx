@@ -30,7 +30,7 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
             roles: [{ role: "", limit: 0 }],
         },
     });
-    console.log(actionButtons)
+
     const [capTabs, setCapTabs] = useState(0);
     const [limitedAttendees, setLimitedAttendees] = useState<boolean>(existingEvent?.limitedAttendees ?? false);
 
@@ -46,6 +46,7 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
 
     useEffect(() => {
         if (existingEvent) {
+            setValue("_id", existingEvent._id);
             setValue("name", existingEvent.name);
             setValue("date", existingEvent.date);
             setValue("description", existingEvent.description);
@@ -54,12 +55,15 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
             setValue("limitedAttendees", existingEvent.limitedAttendees);
             setValue("rolesLimited", existingEvent.rolesLimited);
 
+        if(existingEvent.roles){
+
             existingEvent.roles.forEach((role, index) => {
                 if (index > 0) append({ role: "", limit: 0 });
                 setValue(`roles.${index}.role`, role.role);
                 setValue(`roles.${index}.limit`, role.limit);
             });
         }
+    }
     }, [existingEvent, setValue, append]);
 
     const roleLimitReached = () => fields.length >= 4; //TODO config this? Settings?
@@ -68,6 +72,7 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
         <Container sx={{ width: '100%', p:2 }}>
             <fieldset disabled={readonly} >
                 <form onSubmit={handleSubmit(onSubmit)}>
+                {existingEvent && <input type="hidden" value={existingEvent._id.toString()} name="id" />}
                     <Stack spacing={2}>
                         {/* Event Name */}
                         {

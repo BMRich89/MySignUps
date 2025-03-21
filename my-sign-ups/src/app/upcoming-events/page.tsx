@@ -8,9 +8,9 @@ import { useEffect, useState } from "react"
 import { EventData } from "@/types/eventData"
 import MyDialog from "@/components/MyDialog"
 import { EventForm } from "@/components/forms/EventForm"
-import { ObjectEncodingOptions } from "fs"
 import React from "react"
 import { State } from "../page"
+import { SubmitHandler } from "react-hook-form"
 
 export default function UpcomingEvents() {
   const [toggleUpdate, setToggleUpdate] = useState(false);
@@ -34,15 +34,17 @@ export default function UpcomingEvents() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("/api/events", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((ev) => {
-        setEvents(ev);
-        setLoading(false);
-      });
+    refreshEvents();
   }, []);
+
+  const refreshEvents = () => { fetch("/api/events", {
+    method: "GET",
+  })
+    .then((res) => res.json())
+    .then((ev) => {
+      setEvents(ev);
+      setLoading(false);
+    });}
 
 
   const deleteEventFetch = (id: any) => {
@@ -76,31 +78,53 @@ export default function UpcomingEvents() {
       });
   }
 
-  function editEventFetch(_id: ObjectId): void {
-    setToggleUpdate(false);
-  }
-
+  const onSubmit: SubmitHandler<EventData> = (data: EventData) => {
+      fetch("/api/events", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }, body: JSON.stringify(data),
+      }).then(response => {
+        if (response.ok) {
+          refreshEvents();
+          setOpenView(true);
+          setToggleUpdate(false);
+          setState({ ...state, open: true, message: 'Event updated successfully', severity: 'success' });
+        } else {
+          // Handle error
+          
+          setState({ ...state, open: true, message: 'Error updating event', severity: 'error' });
+        }
+      })
+        .catch(error => {
+          // Handle network error
+          console.error('Network error:', error)
+        });
+  
+    }
   
 
 
   const viewEventDialog = () => {
 
-    const buttons = eventView && <Grid2 container columnSpacing={0} direction={'row-reverse'} sx={{ p: 2 }}>
-      { !toggleUpdate ? <Grid2 size={6}>
+    const actions = eventView && <Grid2 container columnSpacing={0} direction={'row-reverse'} sx={{ p: 2 }}>
+      { !toggleUpdate && <>
+      <Grid2 size={6}>
         <Button variant="contained" color="info" sx={{ width: "100%" }} onClick={() => setToggleUpdate(true)} disabled={false}>
           Edit Event
         </Button>
-      </Grid2> : <Grid2 size={12}>
-        <Button variant="contained" color="info" sx={{ width: "100%" }} onClick={() => editEventFetch(eventView._id)} disabled={false}>
-          Update Event
-        </Button>
       </Grid2>
-      }
-      { !toggleUpdate && <Grid2 size={6}>
+      <Grid2 size={6}>
         <Button variant="contained" color="error" sx={{ width: "90%" }} onClick={() => deleteEventFetch(eventView._id)} disabled={false}>
           Delete Event
         </Button>
-      </Grid2>}
+      </Grid2>
+      </>
+      }
+    </Grid2>
+
+      const submit = toggleUpdate && eventView && <Grid2 size={12}>
+      <Button variant="contained" color="info" sx={{ width: "100%" }} type="submit" disabled={false}>
+        Update Event
+      </Button>
     </Grid2>
 
       const onClose = () => {
@@ -108,7 +132,7 @@ export default function UpcomingEvents() {
       }
 
     return eventView && <MyDialog title={eventView.name} open={openView} setOpen={(val) => setOpenView(val)} onClose={() => onClose()}>
-      <EventForm onSubmit={() => { }} readonly={true} existingEvent={eventView} actionButtons={buttons}/>
+      <EventForm onSubmit={onSubmit} readonly={!toggleUpdate} existingEvent={eventView} submitButton={submit} actionButtons={actions} />
     </MyDialog>
   }
 

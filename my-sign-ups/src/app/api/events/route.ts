@@ -3,11 +3,6 @@ import { EventData } from "@/types/eventData";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
-type Event = {
-  eventName: string;
-  eventDate: Date;
-};
-
 export async function POST(req: Request) {
   const bod = await req.json();
   console.log(bod);
@@ -31,13 +26,11 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  console.log("GET");
   const client = await clientPromise;
   const db = client.db("mydatabase");
-  console.log(req.url);
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
-  console.log(id);
+  
   if (id) {
     const objectId = new ObjectId(id);
     const event = await db.collection("events").findOne({ _id: objectId });
@@ -69,10 +62,13 @@ export async function PUT(req: Request) {
   const client = await clientPromise;
   const db = client.db("mydatabase");
   const body = await req.json();
-  const id: ObjectId = body.id;
-  const objectId = new ObjectId(id);
-  const { eventName, eventDate }: Event = body;
-
-  await db.collection("events").updateOne({ _id: objectId }, { $set: { eventName: eventName, eventDate: eventDate } });
-  return NextResponse.json({ status: 201 });
+  console.log(body)
+  const { _id, name, date, description, roles, capacity, location, limitedAttendees, rolesLimited }: EventData = body;
+  const id: ObjectId =  new ObjectId(_id); // ✅ Convert _id to ObjectId
+  console.log(id)
+  const result = await db.collection("events").updateOne({ _id: id }, { $set: { name:name, date:date, description:description, roles:roles, capacity:capacity, location:location, limitedAttendees:limitedAttendees, rolesLimited:rolesLimited } });
+  if(result.modifiedCount > 0){
+    return NextResponse.json({ status: 201 });
+  }
+  return NextResponse.json({ status: 404 });
 }

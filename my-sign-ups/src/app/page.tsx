@@ -5,7 +5,7 @@ import Image from "next/image";
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AddCardIcon from '@mui/icons-material/AddCard';
 import PageWrapper from "@/components/PageWrapper";
-import { Alert, Box, Button, Container, Grid2, Link, Snackbar, SnackbarOrigin, Stack, Typography } from "@mui/material";
+import { Alert, Button, Container, Grid2, Snackbar, SnackbarOrigin } from "@mui/material";
 import MyDialog from '@/components/MyDialog';
 import { EventForm } from '@/components/forms/EventForm';
 import { SubmitHandler } from 'react-hook-form';
