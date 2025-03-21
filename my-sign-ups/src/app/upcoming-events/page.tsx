@@ -2,7 +2,7 @@
 'use client'
 import EventCard from "@/components/EventCard"
 import PageWrapper from "@/components/PageWrapper"
-import { Alert, Backdrop, Button, CircularProgress, Container, Grid2, Snackbar } from "@mui/material"
+import { Alert, Backdrop, Box, Button, CircularProgress, Container, Grid2, Snackbar, Tab, Tabs } from "@mui/material"
 import { ObjectId } from "mongodb"
 import { useEffect, useState } from "react"
 import { EventData } from "@/types/eventData"
@@ -11,8 +11,10 @@ import { EventForm } from "@/components/forms/EventForm"
 import React from "react"
 import { State } from "../page"
 import { SubmitHandler } from "react-hook-form"
+import SignUpForm from "@/components/forms/SignUpForm"
 
 export default function UpcomingEvents() {
+  const [signUpTabs,setSignUpTabs] = useState(0);
   const [toggleUpdate, setToggleUpdate] = useState(false);
   const [events, setEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -100,21 +102,40 @@ export default function UpcomingEvents() {
         });
   
     }
+    function a11yProps(index: number) {
+      return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+      };
+    }
   
-
+  const tabs = <Box sx={{ width: '100%'  }}>
+  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Tabs value={signUpTabs} onChange={(event: React.SyntheticEvent, newValue: number) => {
+    setSignUpTabs(newValue);}} aria-label="basic tabs example">
+      <Tab label="Event Info" {...a11yProps(0)} />
+      <Tab label="Sign Ups" {...a11yProps(1)} />
+    </Tabs>
+  </Box>
+  </Box>
 
   const viewEventDialog = () => {
 
-    const actions = eventView && <Grid2 container columnSpacing={0} direction={'row-reverse'} sx={{ p: 2 }}>
+    const actions = eventView && <Grid2 container columnSpacing={0} direction={'row'} sx={{ p: 2 }}>
       { !toggleUpdate && <>
-      <Grid2 size={6}>
-        <Button variant="contained" color="info" sx={{ width: "100%" }} onClick={() => setToggleUpdate(true)} disabled={false}>
+      <Grid2 size={4}>
+        <Button variant="contained" color="error" sx={{ width: "90%" }} onClick={() => deleteEventFetch(eventView._id)} disabled={false}>
+          Delete Event
+        </Button>
+      </Grid2>
+      <Grid2 size={4}>
+        <Button variant="contained" color="info" sx={{ width: "90%" }} onClick={() => setToggleUpdate(true)} disabled={false}>
           Edit Event
         </Button>
       </Grid2>
-      <Grid2 size={6}>
-        <Button variant="contained" color="error" sx={{ width: "90%" }} onClick={() => deleteEventFetch(eventView._id)} disabled={false}>
-          Delete Event
+      <Grid2 size={4}>
+        <Button variant="contained" color="success" sx={{ width: "90%" }} onClick={() => {}} disabled={false}>
+          Add Sign Ups
         </Button>
       </Grid2>
       </>
@@ -131,9 +152,15 @@ export default function UpcomingEvents() {
         setToggleUpdate(false);
       }
 
-    return eventView && <MyDialog title={eventView.name} open={openView} setOpen={(val) => setOpenView(val)} onClose={() => onClose()}>
-      <EventForm onSubmit={onSubmit} readonly={!toggleUpdate} existingEvent={eventView} submitButton={submit} actionButtons={actions} />
+
+      
+    return eventView && <>
+    <MyDialog title={eventView.name} open={openView} setOpen={(val) => setOpenView(val)} onClose={() => onClose()}>
+      {tabs}
+      {signUpTabs === 0 && <EventForm onSubmit={onSubmit} readonly={!toggleUpdate} existingEvent={eventView} submitButton={submit} actionButtons={actions} />}
+      {signUpTabs === 1 && <SignUpForm readonly={false}/>}
     </MyDialog>
+    </>
   }
 
   return <>

@@ -73,7 +73,7 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
             <fieldset disabled={readonly} >
                 <form onSubmit={handleSubmit(onSubmit)}>
                 {existingEvent && <input type="hidden" value={existingEvent._id.toString()} name="id" />}
-                    <Stack spacing={2}>
+                    <Stack spacing={4}>
                         {/* Event Name */}
                         {
                             !readonly && <FormControl fullWidth>
@@ -171,35 +171,10 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
                                 )}
                             </FormControl>
                         )}
-
-                     
-                        {/* {!readonly && (
-                            <Grid2 container sx={{ p: 2 }} direction={'row-reverse'}>
-                                <Grid2 size={12}>
-                            <Button variant="contained" type="submit" color="success" sx={{width:"100%"}}>
-                                Add Event
-                            </Button>
-                                </Grid2>
-                            </Grid2>
-                        )}
-                        {readonly && (
-                            <Grid2 container columnSpacing={0} direction={'row-reverse'} sx={{ p: 2 }}>
-                                <Grid2 size={6}>
-
-                                    <Button variant="contained" color="info" sx={{width:"100%"}}>
-                                        Edit Event
-                                    </Button>
-                                </Grid2>
-                                <Grid2 size={6}>
-
-                                    <Button variant="contained" color="error"  sx={{width:"90%"}}>
-                                        Delete Event
-                                    </Button>
-                                </Grid2>
-                            </Grid2>
-                        )} */}
                     </Stack>
-                    {submitButton}
+                    <Box my={2}>
+                        {submitButton}
+                    </Box>
                 </form>
             </fieldset>
                {actionButtons}
