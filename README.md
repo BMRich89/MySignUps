@@ -6,9 +6,11 @@ Capacity limits can be generic "up to x attendees" or by role "5 speakers, 500 a
 Roles and limits can be defined by the user.
 
 ## Technologies
-ReactJS
-NextJS
-Typescript
-MongoDB
-Material UI
-React Hook Forms
+<ol>
+<li>ReactJS</li>  
+<li>NextJS</li>
+<li>Typescript</li>
+<li>MongoDB</li>
+<li>Material UI</li>
+<li>React Hook Forms</li>
+</ol>
