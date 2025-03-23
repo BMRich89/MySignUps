@@ -72,6 +72,7 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
         <Container sx={{ width: '100%', p:2 }}>
             <fieldset disabled={readonly} >
                 <form onSubmit={handleSubmit(onSubmit)}>
+                <Box minHeight={'45vh'}>
                 {existingEvent && <input type="hidden" value={existingEvent._id.toString()} name="id" />}
                     <Stack spacing={4}>
                         {/* Event Name */}
@@ -172,7 +173,8 @@ export function EventForm({ onSubmit, readonly, existingEvent, actionButtons, su
                             </FormControl>
                         )}
                     </Stack>
-                    <Box my={2}>
+                    </Box>
+                    <Box my={1}>
                         {submitButton}
                     </Box>
                 </form>

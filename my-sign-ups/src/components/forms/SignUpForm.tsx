@@ -1,5 +1,5 @@
 import { EventData } from "@/types/eventData";
-import { Button, ButtonGroup, Grid2, TextField } from "@mui/material";
+import { Box, Button, ButtonGroup, Container, Grid2, TextField } from "@mui/material";
 import { FieldArrayWithId, useFieldArray, UseFieldArrayAppend, UseFieldArrayRemove, useForm, UseFormRegister } from "react-hook-form";
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -12,12 +12,12 @@ import { read } from "fs";
 type SignUpFormInputs = {
     eventId: ObjectId
     readonly: boolean,
-    readonlyUpdate: (val:boolean) => void,
+    readonlyUpdate: (val: boolean) => void,
     onSubmit: (data: any) => void;
     // fields: FieldArrayWithId<SignUpData, "SignUps", "id">[],
 }
 
-export default function SignUpForm({ readonly, eventId, onSubmit,readonlyUpdate }: SignUpFormInputs) {
+export default function SignUpForm({ readonly, eventId, onSubmit, readonlyUpdate }: SignUpFormInputs) {
 
     //TODO: Add LIMITS
     const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<SignUpData>({
@@ -38,9 +38,9 @@ export default function SignUpForm({ readonly, eventId, onSubmit,readonlyUpdate 
 
 
     return (
-        <>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <fieldset disabled={readonly}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <fieldset disabled={readonly}>
+                <Box minHeight={'40vh'}>
                     <input type="hidden" {...register("eventId")} value={eventId.toString()} />
                     {filteredFields.map((field, index) => (
                         <Grid2 container spacing={1} key={field.id} my={2}>
@@ -60,22 +60,22 @@ export default function SignUpForm({ readonly, eventId, onSubmit,readonlyUpdate 
                                         <RemoveCircleIcon />
                                     </Button>
                                 )}
-                                { !readonly && <Button variant="contained" color="success" onClick={addSignUp}>
+                                {!readonly && <Button variant="contained" color="success" onClick={addSignUp}>
                                     <AddCircleIcon />
                                 </Button>}
                             </ButtonGroup>
                         </Grid2>
                     ))}
-                  {  !readonly && <Button variant="contained" type="submit">
-                        Update Sign Ups
-                    </Button>
-                  }
-                </fieldset>
-            </form>
-            {  readonly && <Button variant="contained" onClick={() => readonlyUpdate(false)}>
-                        Add Sign Ups
-                    </Button>
-                  }
-        </>
+                </Box>
+            </fieldset>
+            {!readonly && <Button variant="contained" color="success" type="submit" fullWidth>
+                Update Sign Ups
+            </Button>
+            }
+            {readonly && <Button variant="contained" color="info" fullWidth onClick={() => readonlyUpdate(false)}>
+                Add Sign Ups
+            </Button>
+            }
+        </form>
     );
 }

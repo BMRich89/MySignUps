@@ -162,7 +162,7 @@ export default function UpcomingEvents() {
           </Button>
         </Grid2>
         <Grid2 size={4}>
-          <Button variant="contained" color="success" sx={{ width: "90%" }} onClick={() => { }} disabled={false}>
+          <Button variant="contained" color="success" sx={{ width: "90%" }} onClick={() => { setSignUpReadonly(false); setSignUpTabs(1) }} disabled={false}>
             Add Sign Ups
           </Button>
         </Grid2>
