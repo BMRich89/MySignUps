@@ -50,3 +50,24 @@ export async function POST(req: Request) {
       );
     }
   }
+
+  export async function GET(req: Request) {
+    const client = await clientPromise;
+    const db = client.db("mydatabase");
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("eventId");
+    console.log(id);
+    if (id) {
+      const objectId = new ObjectId(id);
+      const signups = await db.collection("signups").find({ _id: objectId });
+      if (signups) {
+        return NextResponse.json(signups, { status: 200 });
+      } else {
+        return NextResponse.json({ message: "signups cannot be found" }, { status: 404 });
+      }
+    } else {
+      const records = await db.collection("signups").find().toArray();
+      return NextResponse.json(records, { status: 200 });
+    }
+  }
+  

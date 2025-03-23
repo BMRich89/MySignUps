@@ -8,13 +8,15 @@ import { useEffect, useState } from "react"
 import { EventData } from "@/types/eventData"
 import React from "react"
 import { State } from "../page"
-import { deleteEvent, viewEvent } from "../utils/api"
-import EventView from "@/components/eventView"
+import { deleteEvent, fetchSignUps, viewEvent } from "../utils/api"
+import { SignUpData } from "@/types/signUps"
+import EventView from "@/components/EventView"
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState(true);
   const [eventView, setEventView] = useState<EventData | null>(null);
+  const [signUpView, setSignUpView] = useState<{email:string}[] | null>(null);
   const [openView, setOpenView] = useState(false);
   const [state, setState] = React.useState<State>({
     open: false,
@@ -51,7 +53,10 @@ export default function UpcomingEvents() {
     });
   }
 
-
+  const signUpsFetch = async (id: ObjectId) => await fetchSignUps(id).then((response) => {
+    console.log(response.json())
+    return response.json()
+  }).then((su)=> setSignUpView(su.signUps));
   const deleteEventFetch = async (id: ObjectId) => {
     try {
       await deleteEvent(id);
@@ -100,6 +105,8 @@ export default function UpcomingEvents() {
         refreshEvents={() => refreshEvents()}
         openDialog={openView} 
         setOpenDialog={setOpenView}
+        getSignUps={signUpsFetch}
+        signUps={signUpView}
         showToaster={state}
         setShowToaster={(open:boolean,msg:string, severity:'success'|'error') => updateToaster(open,msg,severity) }/>
         } 

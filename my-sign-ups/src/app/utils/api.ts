@@ -6,6 +6,12 @@ export const fetchEvents = async () => {
     const response = await fetch("/api/events", { method: "GET" });
     return response.json();
   };
+
+  export const fetchSignUps = async (eventId:ObjectId) => {
+    const response = await fetch(`/api/signups?eventId=${eventId}`, { method: "GET" });
+    return response.json();
+  };
+  
   
   export const deleteEvent = async (id: ObjectId) => {
     const response = await fetch("/api/events", {

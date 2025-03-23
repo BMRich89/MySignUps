@@ -15,10 +15,12 @@ type EventViewProps = {
     openDialog: boolean,
     setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
     showToaster: State,
+    getSignUps: (id:ObjectId) => void,
+    signUps: {email:string}[] | null,
     setShowToaster: (open:boolean,msg:string,severity:'success'|'error') => void
 }
 
-export default function EventView({eventData, refreshEvents,openDialog,setOpenDialog,setShowToaster}: EventViewProps){
+export default function EventView({eventData, refreshEvents,openDialog,setOpenDialog,setShowToaster,signUps,getSignUps}: EventViewProps){
 const [toggleUpdate, setToggleUpdate] = useState(false);
   const [signUpTabs, setSignUpTabs] = useState(0);
     const [signUpReadonly, setSignUpReadonly] = useState(true);
@@ -66,6 +68,7 @@ const [toggleUpdate, setToggleUpdate] = useState(false);
         const tabs = <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={signUpTabs} onChange={(event: React.SyntheticEvent, newValue: number) => {
+                getSignUps(eventData._id);
               setSignUpTabs(newValue);
             }} aria-label="basic tabs example">
               <Tab label="Event Info" disabled={signUpTabs === 0} {...a11yProps(0)} />
@@ -104,12 +107,12 @@ const [toggleUpdate, setToggleUpdate] = useState(false);
         const onClose = () => {
           setToggleUpdate(false);
         }
-    
+
         return eventData && <>
           <MyDialog title={eventData.name} open={openDialog} setOpen={(val) => setOpenDialog(val)} onClose={() => onClose()}>
             {tabs}
             {signUpTabs === 0 && <EventForm onSubmit={onSubmit} readonly={!toggleUpdate} existingEvent={eventData} submitButton={submit} actionButtons={actions} />}
-            {signUpTabs === 1 && <SignUpForm readonly={signUpReadonly} readonlyUpdate={(val) => setSignUpReadonly(val)} eventId={eventData._id} onSubmit={onSubmitSignUps} />}
+            {signUpTabs === 1 && <SignUpForm signUps={signUps} readonly={signUpReadonly} readonlyUpdate={(val) => setSignUpReadonly(val)} eventId={eventData._id} onSubmit={onSubmitSignUps} />}
           </MyDialog>
         </>
 

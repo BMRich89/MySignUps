@@ -6,18 +6,22 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { SignUpData } from "@/types/signUps";
 import { ObjectId } from "mongodb";
 import { read } from "fs";
+import { fetchSignUps } from "@/app/utils/api";
+import { useEffect } from "react";
 
 
 
 type SignUpFormInputs = {
     eventId: ObjectId
     readonly: boolean,
+    signUps: {email:string}[] | null,
     readonlyUpdate: (val: boolean) => void,
     onSubmit: (data: any) => void;
-    // fields: FieldArrayWithId<SignUpData, "SignUps", "id">[],
 }
 
-export default function SignUpForm({ readonly, eventId, onSubmit, readonlyUpdate }: SignUpFormInputs) {
+export default function SignUpForm({ signUps, readonly, eventId, onSubmit, readonlyUpdate }: SignUpFormInputs) {
+
+
 
     //TODO: Add LIMITS
     const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<SignUpData>({
@@ -29,7 +33,14 @@ export default function SignUpForm({ readonly, eventId, onSubmit, readonlyUpdate
         control,
         name: "signUps",
     });
+    useEffect(() => {     if(signUps){
 
+        signUps.forEach((su, index) => {
+            if (index > 0) append({ email: ""});
+            setValue(`signUps.${index}.email`, su.email);
+        });
+    }},[append,setValue])
+    
     const filteredFields = readonly ? fields.filter((f) => readonly) : fields;
     const addSignUp = () => {
         //TODO: update signup table
