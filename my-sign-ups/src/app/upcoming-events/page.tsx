@@ -13,6 +13,7 @@ import { State } from "../page"
 import { SubmitHandler } from "react-hook-form"
 import SignUpForm from "@/components/forms/SignUpForm"
 import { SignUpData } from "@/types/signUps"
+import { deleteEvent, viewEvent, updateEvent, submitSignUps } from "../utils/api"
 
 export default function UpcomingEvents() {
   const [signUpReadonly, setSignUpReadonly] = useState(true);
@@ -53,20 +54,18 @@ export default function UpcomingEvents() {
   }
 
 
-  const deleteEventFetch = (id: any) => {
-    fetch("/api/events", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: id }),
-    }).then((response) => {
-      if (response.ok) {
-        setEvents(events.filter((ev) => ev._id !== id)); //TODO probably should refetch rather than filtering out
-        setOpenView(false);
-        setState({ ...state, open: true, message: 'Event deleted successfully', severity: 'success' });
-      }
-    });
-  }
+  const deleteEventFetch = async (id: ObjectId) => {
+    try {
+      await deleteEvent(id);
+      setEvents(events.filter((ev) => ev._id !== id)); 
+      setOpenView(false);
+      setState({ ...state, open: true, message: 'Event deleted successfully', severity: 'success' });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
+  
   if (loading) {
     return <PageWrapper title="Upcoming Events">
       <Backdrop open={loading}>
@@ -74,59 +73,36 @@ export default function UpcomingEvents() {
       </Backdrop>
     </PageWrapper>
   }
-  function viewEventFetch(_id: ObjectId): void {
-    fetch(`/api/events?id=${_id}`, {
-      method: "GET",
-    }).then((response) => response.json())
-      .then((data) => {
-        setEventView(data);
-        setOpenView(true);
-      });
-  }
+  const viewEventFetch = async (_id: ObjectId) => {
+    try {
+      const data = await viewEvent(_id);
+      setEventView(data);
+      setOpenView(true);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const onSubmit: SubmitHandler<EventData> = (data: EventData) => {
-    fetch("/api/events", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" }, body: JSON.stringify(data),
-    }).then(response => {
-      if (response.ok) {
-        refreshEvents();
-        setOpenView(true);
-        setToggleUpdate(false);
-        setState({ ...state, open: true, message: 'Event updated successfully', severity: 'success' });
-      } else {
-        // Handle error
+  const onSubmit = async (data: EventData) => {
+    try {
+      await updateEvent(data);
+      refreshEvents();
+      setOpenView(true);
+      setToggleUpdate(false);
+      setState({ ...state, open: true, message: 'Event updated successfully', severity: 'success' });
+    } catch (error) {
+      setState({ ...state, open: true, message: 'Error updating event', severity: 'error' });
+    }
+  };
 
-        setState({ ...state, open: true, message: 'Error updating event', severity: 'error' });
-      }
-    })
-      .catch(error => {
-        // Handle network error
-        console.error('Network error:', error)
-      });
-
-  }
-
-  const onSubmitSignUps: SubmitHandler<SignUpData> = (data: SignUpData) => {
-    fetch("/api/signups", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    }).then(response => {
-      if (response.ok) {
-        setState({ ...state, open: true, message: 'Sign ups added successfully', severity: 'success' });
-      } else {
-        // Handle error
-
-        setState({ ...state, open: true, message: 'Error adding sign ups', severity: 'error' });
-      }
-    })
-      .catch(error => {
-        // Handle network error
-        console.error('Network error:', error)
-      });
-
-  }
+  const onSubmitSignUps = async (data: SignUpData) => {
+    try {
+      await submitSignUps(data);
+      setState({ ...state, open: true, message: 'Sign ups added successfully', severity: 'success' });
+    } catch (error) {
+      setState({ ...state, open: true, message: 'Error adding sign ups', severity: 'error' });
+    }
+  };
 
 
   function a11yProps(index: number) {

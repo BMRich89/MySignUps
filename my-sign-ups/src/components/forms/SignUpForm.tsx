@@ -60,12 +60,12 @@ export default function SignUpForm({ readonly, eventId, onSubmit, readonlyUpdate
                                         <RemoveCircleIcon />
                                     </Button>
                                 )}
-                                {!readonly && <Button variant="contained" color="success" onClick={addSignUp}>
-                                    <AddCircleIcon />
-                                </Button>}
                             </ButtonGroup>
                         </Grid2>
                     ))}
+                    {!readonly && <Button variant="contained" color="success" onClick={addSignUp}>
+                      Add new sign up  <AddCircleIcon sx={{ m:1}} />
+                    </Button>}
                 </Box>
             </fieldset>
             {!readonly && <Button variant="contained" color="success" type="submit" fullWidth>
