@@ -2,7 +2,6 @@ import clientPromise from "@/lib/mongo";
 import { SignUpData } from "@/types/signUps";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
-import { EventType } from "react-hook-form";
 
 
 export async function POST(req: Request) {

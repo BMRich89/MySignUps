@@ -1,5 +1,4 @@
-import { EventData } from "@/types/eventData";
-import { Box, Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid2, Paper, Stack } from "@mui/material";
+import { Button, Container, Dialog, DialogActions, DialogTitle, Grid2 } from "@mui/material";
 import React from "react";
 import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 interface MyDialogProps {
@@ -35,7 +34,6 @@ export default function MyDialog({ title, open, setOpen, children, onClose }: My
             <Container sx={{minHeight:'50vh'}}>
                 {children}
             </Container>
-
         </Dialog>
     );
 }

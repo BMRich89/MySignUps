@@ -1,4 +1,3 @@
-
 'use client'
 import EventCard from "@/components/EventCard"
 import PageWrapper from "@/components/PageWrapper"
@@ -9,8 +8,7 @@ import { EventData } from "@/types/eventData"
 import React from "react"
 import { State } from "../page"
 import { deleteEvent, fetchSignUps, viewEvent } from "../utils/api"
-import { SignUpData } from "@/types/signUps"
-import EventView from "@/components/EventView"
+import EventView from "@/components/ViewEvent"
 
 export default function UpcomingEvents() {
   const [events, setEvents] = useState<EventData[]>([]);

@@ -1,12 +1,8 @@
 'use client'
 import ConvertToTitleCase from "@/app/utils/stringUtil";
 import { Box, Button, Card, CardContent, Typography } from "@mui/material"
-import { useTheme } from '@mui/material/styles';
 import DeleteForeverTwoToneIcon from '@mui/icons-material/DeleteForeverTwoTone';
-import EditCalendarIcon from '@mui/icons-material/EditCalendar';
-import PreviewIcon from '@mui/icons-material/Preview';
 import { EventData } from "@/types/eventData";
-import { MoreVert } from "@mui/icons-material";
 type EventCardProps = {
     EventData: EventData,
     deleteCallback: () => void,

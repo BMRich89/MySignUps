@@ -5,7 +5,6 @@ type PageWrapperProps = {
   children: React.ReactNode;
 }
 
-
 export default function PageWrapper({ title, children }: PageWrapperProps) {
   return (
     <main>

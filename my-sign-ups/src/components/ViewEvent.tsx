@@ -3,10 +3,10 @@ import { Grid2, Button, Box, Tab, Tabs } from "@mui/material"
 import { EventForm } from "./forms/EventForm"
 import SignUpForm from "./forms/SignUpForm"
 import MyDialog from "./MyDialog"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { State } from "@/app/page"
 import { ObjectId } from "mongodb"
-import { deleteEvent, submitSignUps, updateEvent, viewEvent } from "@/app/utils/api"
+import { deleteEvent, submitSignUps, updateEvent } from "@/app/utils/api"
 import { SignUpData } from "@/types/signUps"
 
 type EventViewProps = {

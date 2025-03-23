@@ -1,6 +1,4 @@
-
 'use client'
-
 import { Box, Button, Paper, Stack, Typography } from "@mui/material"
 
 type LinkButtonProps = {
@@ -10,7 +8,6 @@ type LinkButtonProps = {
     component?:"a" | "button",
     clickHandler?: () => void
 }
-
 
 export default function LinkButton({ title,icon,link,clickHandler, component }: LinkButtonProps) {
     return <Button fullWidth variant="contained" component={!component ? "button" : component} sx={{height:"100%",color:'primary.dark.500', textAlign:'center'}} onClick={clickHandler} href={link}>

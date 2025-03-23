@@ -1,15 +1,10 @@
-import { EventData } from "@/types/eventData";
-import { Box, Button, ButtonGroup, Container, Grid2, TextField } from "@mui/material";
-import { FieldArrayWithId, useFieldArray, UseFieldArrayAppend, UseFieldArrayRemove, useForm, UseFormRegister } from "react-hook-form";
+import { Box, Button, ButtonGroup, Grid2, TextField } from "@mui/material";
+import { useFieldArray, useForm } from "react-hook-form";
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { SignUpData } from "@/types/signUps";
 import { ObjectId } from "mongodb";
-import { read } from "fs";
-import { fetchSignUps } from "@/app/utils/api";
 import { useEffect } from "react";
-
-
 
 type SignUpFormInputs = {
     eventId: ObjectId
@@ -20,9 +15,6 @@ type SignUpFormInputs = {
 }
 
 export default function SignUpForm({ signUps, readonly, eventId, onSubmit, readonlyUpdate }: SignUpFormInputs) {
-
-
-
     //TODO: Add LIMITS
     const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<SignUpData>({
         defaultValues: {
@@ -46,7 +38,6 @@ export default function SignUpForm({ signUps, readonly, eventId, onSubmit, reado
         //TODO: update signup table
         append({ email: "" });
     };
-
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
