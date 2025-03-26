@@ -54,8 +54,9 @@ export default function UpcomingEvents() {
     return response.map((res:any) => res.email);
   }).then((su)=> {
     console.log(su)
-    return setSignUpView(su);
+    return su;
   });
+
   const deleteEventFetch = async (id: ObjectId) => {
     try {
       await deleteEvent(id);
@@ -80,6 +81,8 @@ export default function UpcomingEvents() {
       console.log(_id)
       const data = await viewEvent(_id);
       setEventView(data);
+      const sup = await signUpsFetch(_id);
+      setSignUpView(sup);
       setOpenView(true);
     } catch (error) {
       console.error(error);
