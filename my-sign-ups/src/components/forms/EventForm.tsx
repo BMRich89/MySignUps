@@ -99,6 +99,7 @@ export function EventForm({
                                 </FormControl>
                             )}
 
+                            //TODO: Add validation to warn user if event has sign ups already. prompt for re-email 
                             <FormControl fullWidth>
                                 <InputLabel variant="outlined" shrink>Event Date</InputLabel>
                                 <TextField
