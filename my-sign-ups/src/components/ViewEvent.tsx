@@ -16,8 +16,8 @@ type EventViewProps = {
     setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
     showToaster: State,
     getSignUps: (id:ObjectId) => void,
-    signUps: {email:string}[] | null,
-    setShowToaster: (open:boolean,msg:string,severity:'success'|'error') => void
+    signUps: string[] | null,
+    setShowToaster: (open:boolean,msg:string,severity:'success'|'error') => void,
 }
 
 export default function EventView({eventData, refreshEvents,openDialog,setOpenDialog,setShowToaster,signUps,getSignUps}: EventViewProps){
@@ -104,12 +104,12 @@ const [toggleUpdate, setToggleUpdate] = useState(false);
           </Button>
         </Grid2>
     
-        const onClose = () => {
+        const onDialogClose = () => {
           setToggleUpdate(false);
         }
 
         return eventData && <>
-          <MyDialog title={eventData.name} open={openDialog} setOpen={(val) => setOpenDialog(val)} onClose={() => onClose()}>
+          <MyDialog title={eventData.name} open={openDialog} setOpen={(val) => setOpenDialog(val)} onClose={() => onDialogClose()}>
             {tabs}
             {signUpTabs === 0 && <EventForm onSubmit={onSubmit} readonly={!toggleUpdate} existingEvent={eventData} submitButton={submit} actionButtons={actions} />}
             {signUpTabs === 1 && <SignUpForm signUps={signUps} readonly={signUpReadonly} readonlyUpdate={(val) => setSignUpReadonly(val)} eventId={eventData._id} onSubmit={onSubmitSignUps} />}

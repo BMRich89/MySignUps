@@ -57,9 +57,9 @@ export async function POST(req: Request) {
     const id = searchParams.get("eventId");
     console.log(id);
     if (id) {
-      const objectId = new ObjectId(id);
-      const signups = await db.collection("signups").find({ _id: objectId });
+      const signups = await db.collection("signUps").find({ eventId: id }).toArray();
       if (signups) {
+        console.log(signups)
         return NextResponse.json(signups, { status: 200 });
       } else {
         return NextResponse.json({ message: "signups cannot be found" }, { status: 404 });

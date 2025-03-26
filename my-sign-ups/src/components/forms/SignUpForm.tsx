@@ -9,12 +9,13 @@ import { useEffect } from "react";
 type SignUpFormInputs = {
     eventId: ObjectId
     readonly: boolean,
-    signUps: {email:string}[] | null,
+    signUps: string[] | null,
     readonlyUpdate: (val: boolean) => void,
     onSubmit: (data: any) => void;
 }
 
 export default function SignUpForm({ signUps, readonly, eventId, onSubmit, readonlyUpdate }: SignUpFormInputs) {
+    console.log(signUps);
     //TODO: Add LIMITS
     const { register, control, handleSubmit, watch, setValue, formState: { errors } } = useForm<SignUpData>({
         defaultValues: {
@@ -29,7 +30,7 @@ export default function SignUpForm({ signUps, readonly, eventId, onSubmit, reado
 
         signUps.forEach((su, index) => {
             if (index > 0) append({ email: ""});
-            setValue(`signUps.${index}.email`, su.email);
+            setValue(`signUps.${index}.email`, su);
         });
     }},[append,setValue])
     
@@ -44,7 +45,8 @@ export default function SignUpForm({ signUps, readonly, eventId, onSubmit, reado
             <fieldset disabled={readonly}>
                 <Box minHeight={'40vh'}>
                     <input type="hidden" {...register("eventId")} value={eventId.toString()} />
-                    {filteredFields.map((field, index) => (
+                    {/* TODO Remove and fix dupes */}
+                    {filteredFields.filter((f) => f.email === "").map((field, index) => (
                         <Grid2 container spacing={1} key={field.id} my={2}>
                             <Grid2 size={8}>
                                 <Grid2 container spacing={1}>
